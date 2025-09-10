@@ -25,6 +25,7 @@ const { OphthalmologyTreatmentRouter } = require("../routes/ophthalmologyTreatme
 const { SettingsRouter } = require("../routes/settings.routes");
 const { StatisticsRouter } = require("../routes/statistics.routes");
 const { ContactRouter } = require("../routes/contact.routes");
+const { InvoiceRouter } = require("../routes/invoices.routes");
 
 module.exports = (app) => {
   app.use(express.json({ limit: "9999000009mb" }));
@@ -59,6 +60,7 @@ module.exports = (app) => {
   app.use("/api/settings", SettingsRouter);
   app.use("/api/stats", StatisticsRouter);
   app.use("/api/contact", ContactRouter);
+  app.use("/api/invoices", InvoiceRouter);
   app.post("/api/upload-image", uploadMiddleware, async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
