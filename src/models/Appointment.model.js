@@ -28,7 +28,7 @@ const appointmentSchema = new mongoose.Schema(
     patientGender: {
       type: String,
       required: true,
-      enum: ["Male", "Female", "Other"],
+      enum: ["Male", "Female", "Other","male", "female", "other"],
     },
     city: {
       type: String,
