@@ -1,5 +1,6 @@
 const { Appointment } = require("../models/Appointment.model");
 const BasicServices = require("./basic.service");
+const { InvoiceEmailService } = require("./invoiceEmail.service");
 
 class AppointmentService extends BasicServices {
   constructor() {
@@ -171,14 +172,27 @@ class AppointmentService extends BasicServices {
   };
 
   // Confirm appointment with specific date and time
-  confirmAppointment = (id, confirmedDate, confirmedTime, consultationFees = 0) => {
-    return this.findByIdAndUpdate(id, {
+  confirmAppointment = async (id, confirmedDate, confirmedTime, consultationFees = 0) => {
+    const appointment = await this.findByIdAndUpdate(id, {
       status: 'confirmed',
       confirmedDate: new Date(confirmedDate),
       confirmedTime,
       consultationFees,
       confirmedDate: new Date()
     });
+
+    // Send invoice email when appointment is confirmed
+    if (appointment) {
+      try {
+        await InvoiceEmailService.sendInvoiceFromAppointment(appointment);
+        console.log(`Invoice email sent successfully for appointment ${id}`);
+      } catch (error) {
+        console.error(`Failed to send invoice email for appointment ${id}:`, error.message);
+        // Don't throw error to avoid breaking appointment confirmation
+      }
+    }
+
+    return appointment;
   };
 
   // Cancel appointment with reason

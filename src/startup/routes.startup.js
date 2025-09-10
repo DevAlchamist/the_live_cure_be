@@ -19,6 +19,12 @@ const { UserRouter } = require("../routes/users.routes");
 const { DoctorRouter } = require("../routes/doctors.routes");
 const { ClinicRouter } = require("../routes/clinics.routes");
 const { AppointmentRouter } = require("../routes/appointments.routes");
+const { BlogRouter } = require("../routes/blogs.routes");
+const { PatientStoryRouter } = require("../routes/patientStories.routes");
+const { OphthalmologyTreatmentRouter } = require("../routes/ophthalmologyTreatments.routes");
+const { SettingsRouter } = require("../routes/settings.routes");
+const { StatisticsRouter } = require("../routes/statistics.routes");
+const { ContactRouter } = require("../routes/contact.routes");
 
 module.exports = (app) => {
   app.use(express.json({ limit: "9999000009mb" }));
@@ -47,6 +53,12 @@ module.exports = (app) => {
   app.use("/api/doctors", DoctorRouter);
   app.use("/api/clinics", ClinicRouter);
   app.use("/api/appointments", AppointmentRouter);
+  app.use("/api/blogs", BlogRouter);
+  app.use("/api/patient-stories", PatientStoryRouter);
+  app.use("/api/treatments/ophthalmology", OphthalmologyTreatmentRouter);
+  app.use("/api/settings", SettingsRouter);
+  app.use("/api/stats", StatisticsRouter);
+  app.use("/api/contact", ContactRouter);
   app.post("/api/upload-image", uploadMiddleware, async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });

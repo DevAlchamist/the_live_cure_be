@@ -10,9 +10,9 @@ let transporter = nodemailer.createTransport({
     },
 });
 
-export const sendMail = async function ({ to, subject, text, html, amp }) {
+const sendMail = async function ({ to, subject, text, html, amp }) {
     const info = await transporter.sendMail({
-        from: '"E-commerce" <nk105000@gamil.com>',
+        from: '"The Live Cure" <nk105000@gmail.com>',
         to: to,
         subject,
         text,
@@ -22,3 +22,5 @@ export const sendMail = async function ({ to, subject, text, html, amp }) {
 
     return info;
 };
+
+module.exports = { sendMail };
