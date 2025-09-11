@@ -9,12 +9,27 @@ router.get("/general", SettingsController.getGeneralSettings);
 router.get("/notifications", SettingsController.getNotificationSettings);
 router.get("/security", SettingsController.getSecuritySettings);
 router.get("/appearance", SettingsController.getAppearanceSettings);
-router.get("/all", [Auth], SettingsController.getAllSettings);
+router.get(
+  "/all", //[Auth]
+  SettingsController.getAllSettings
+);
 
 // PUT requests (Admin only)
-router.put("/general", [Auth], SettingsController.updateGeneralSettings);
-router.put("/notifications", [Auth], SettingsController.updateNotificationSettings);
-router.put("/security", [Auth], SettingsController.updateSecuritySettings);
-router.put("/appearance", [Auth], SettingsController.updateAppearanceSettings);
+router.put(
+  "/general", //[Auth]
+  SettingsController.updateGeneralSettings
+);
+router.put(
+  "/notifications", //[Auth]
+  SettingsController.updateNotificationSettings
+);
+router.put(
+  "/security", //[Auth]
+  SettingsController.updateSecuritySettings
+);
+router.put(
+  "/appearance", //[Auth]
+  SettingsController.updateAppearanceSettings
+);
 
 module.exports = { SettingsRouter: router };
