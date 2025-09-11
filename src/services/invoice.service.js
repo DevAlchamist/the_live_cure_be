@@ -1,5 +1,5 @@
 const Invoice = require("../models/Invoice.model");
-const Appointment = require("../models/Appointment.model");
+const { Appointment } = require("../models/Appointment.model");
 const { sendMail } = require("../helpers/Mail.helper");
 const createQueryHelper = require("../helpers/Query.helper");
 

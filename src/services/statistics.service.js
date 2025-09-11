@@ -1,6 +1,6 @@
-const Doctor = require("../models/Doctor.model");
-const Clinic = require("../models/Clinic.model");
-const Appointment = require("../models/Appointment.model");
+const { Doctor } = require("../models/Doctor.model");
+const { Clinic } = require("../models/Clinic.model");
+const { Appointment } = require("../models/Appointment.model");
 const ContactInquiry = require("../models/ContactInquiry.model");
 
 class StatisticsService {
