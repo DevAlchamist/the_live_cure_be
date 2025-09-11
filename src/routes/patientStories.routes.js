@@ -1,5 +1,7 @@
 const express = require("express");
-const { PatientStoryController } = require("../controllers/patientStory.controllers");
+const {
+  PatientStoryController,
+} = require("../controllers/patientStory.controllers");
 const { Auth } = require("../middlewares/auth.middlewares");
 
 const router = express.Router();
@@ -27,21 +29,40 @@ router.get("/search", PatientStoryController.searchStories);
 router.get("/category/:category", PatientStoryController.getStoriesByCategory);
 // Query params: page, limit
 
-router.get("/condition/:condition", PatientStoryController.getStoriesByCondition);
+router.get(
+  "/condition/:condition",
+  PatientStoryController.getStoriesByCondition
+);
 // Query params: page, limit
 
 router.get("/:id", PatientStoryController.getPatientStoryById);
 
 // POST requests (Admin only)
-router.post("/", [Auth], PatientStoryController.createPatientStory);
+router.post(
+  "/",
+  //[Auth]
+  PatientStoryController.createPatientStory
+);
 
 // PUT requests (Admin only)
-router.put("/:id", [Auth], PatientStoryController.updatePatientStory);
+router.put(
+  "/:id",
+  //[Auth]
+  PatientStoryController.updatePatientStory
+);
 
 // PATCH requests (Admin only)
-router.patch("/:id/verify", [Auth], PatientStoryController.verifyStory);
+router.patch(
+  "/:id/verify",
+  //[Auth]
+  PatientStoryController.verifyStory
+);
 
 // DELETE requests (Admin only)
-router.delete("/:id", [Auth], PatientStoryController.deletePatientStory);
+router.delete(
+  "/:id",
+  //[Auth]
+  PatientStoryController.deletePatientStory
+);
 
 module.exports = { PatientStoryRouter: router };
