@@ -23,11 +23,8 @@ class DoctorController {
       customPopulate: [],
     });
 
-    // Remove the default 'deactivated' filter since Doctor model uses 'status' field
-    delete filter.deactivated;
-
     const doctors = await DoctorService.paginate(filter, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Get doctor by ID
@@ -82,7 +79,7 @@ class DoctorController {
     });
 
     const doctors = await DoctorService.getDoctorsBySpecialty(specialty, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Get doctors by city
@@ -94,7 +91,7 @@ class DoctorController {
     });
 
     const doctors = await DoctorService.getDoctorsByCity(city, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Get doctors by category
@@ -106,7 +103,7 @@ class DoctorController {
     });
 
     const doctors = await DoctorService.getDoctorsByCategory(category, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Update doctor status
@@ -205,11 +202,8 @@ class DoctorController {
       customLabels: { docs: "doctors" },
     });
 
-    // Remove the default 'deactivated' filter since Doctor model uses 'status' field
-    delete filter.deactivated;
-
     const doctors = await DoctorService.paginate(filter, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Get active doctors only
@@ -221,7 +215,7 @@ class DoctorController {
     
     filter.status = "active";
     const doctors = await DoctorService.paginate(filter, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Get inactive doctors (Admin only)
@@ -233,7 +227,7 @@ class DoctorController {
     
     filter.status = "inactive";
     const doctors = await DoctorService.paginate(filter, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Get all unique specialties
@@ -272,7 +266,7 @@ class DoctorController {
     filter.rating = { $gte: 4.0 };
     
     const doctors = await DoctorService.paginate(filter, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Get nearby doctors (location-based)
@@ -300,7 +294,7 @@ class DoctorController {
     filter.status = "active";
 
     const doctors = await DoctorService.paginate(filter, options);
-    Response(res).body(...doctors).send();
+    Response(res).body(doctors).send();
   };
 
   // Get doctor statistics (Admin)
