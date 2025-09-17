@@ -19,6 +19,8 @@ router.get("/city/:city", ClinicController.getClinicsByCity);
 router.get("/type/:type", ClinicController.getClinicsByType);
 router.get("/specialty/:specialty", ClinicController.getClinicsBySpecialty);
 
+router.get("/stats", ClinicController.getClinicStats); // Clinic statistics
+
 router.get("/:clinicId", ClinicController.getClinicById); // Clinic details
 
 // Additional clinic endpoints (commented out until methods are implemented)

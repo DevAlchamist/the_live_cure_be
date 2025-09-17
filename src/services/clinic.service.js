@@ -171,6 +171,116 @@ class ClinicService extends BasicServices {
     };
     return this.paginate(query, options);
   };
+
+  // Get clinic statistics
+  getClinicStats = async () => {
+    // Total clinics count
+    const totalClinics = await Clinic.countDocuments();
+    
+    // Active vs Inactive clinics
+    const statusStats = await Clinic.aggregate([
+      {
+        $group: {
+          _id: '$status',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Clinics by type
+    const typeStats = await Clinic.aggregate([
+      {
+        $group: {
+          _id: '$type',
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { count: -1 } }
+    ]);
+
+    // Clinics by city (top 10)
+    const cityStats = await Clinic.aggregate([
+      {
+        $group: {
+          _id: '$city',
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { count: -1 } },
+      { $limit: 10 }
+    ]);
+
+    // Clinics by state
+    const stateStats = await Clinic.aggregate([
+      {
+        $group: {
+          _id: '$state',
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { count: -1 } }
+    ]);
+
+    // Special features statistics
+    const emergencyCenters = await Clinic.countDocuments({ isEmergencyCenter: true });
+    const twentyFourHourClinics = await Clinic.countDocuments({ is24Hours: true });
+    const clinicsWithParking = await Clinic.countDocuments({ hasParking: true });
+    const wheelchairAccessible = await Clinic.countDocuments({ hasWheelchairAccess: true });
+
+    // Most common specialties (top 10)
+    const specialtyStats = await Clinic.aggregate([
+      { $unwind: '$specialties' },
+      {
+        $group: {
+          _id: '$specialties',
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { count: -1 } },
+      { $limit: 10 }
+    ]);
+
+    // Most common facilities (top 10)
+    const facilityStats = await Clinic.aggregate([
+      { $unwind: '$facilities' },
+      {
+        $group: {
+          _id: '$facilities',
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { count: -1 } },
+      { $limit: 10 }
+    ]);
+
+    // Recently added clinics (last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const recentClinics = await Clinic.countDocuments({
+      createdAt: { $gte: thirtyDaysAgo }
+    });
+
+    return {
+      totalClinics,
+      statusBreakdown: statusStats.reduce((acc, item) => {
+        acc[item._id] = item.count;
+        return acc;
+      }, {}),
+      typeBreakdown: typeStats,
+      topCities: cityStats,
+      stateBreakdown: stateStats,
+      features: {
+        emergencyCenters,
+        twentyFourHourClinics,
+        clinicsWithParking,
+        wheelchairAccessible
+      },
+      topSpecialties: specialtyStats,
+      topFacilities: facilityStats,
+      recentlyAdded: recentClinics,
+      lastUpdated: new Date()
+    };
+  };
 }
 
 module.exports.ClinicService = new ClinicService();

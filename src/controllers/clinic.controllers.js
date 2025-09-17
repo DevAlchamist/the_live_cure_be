@@ -273,6 +273,15 @@ class ClinicController {
     const clinics = await ClinicService.getClinicsByAmenities(amenities, options);
     Response(res).body(clinics).send();
   };
+
+  // Get clinic statistics
+  getClinicStats = async (req, res) => {
+    const stats = await ClinicService.getClinicStats();
+    Response(res)
+      .message("Clinic statistics retrieved successfully")
+      .body(stats)
+      .send();
+  };
 }
 
 module.exports.ClinicController = new ClinicController();
