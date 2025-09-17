@@ -23,6 +23,9 @@ class DoctorController {
       customPopulate: [],
     });
 
+    // Remove the default 'deactivated' filter since Doctor model uses 'status' field
+    delete filter.deactivated;
+
     const doctors = await DoctorService.paginate(filter, options);
     Response(res).body(doctors).send();
   };
@@ -201,6 +204,9 @@ class DoctorController {
       searchFields: ["fullName", "specialty", "mainCategory", "cities", "diseasesTreated"],
       customLabels: { docs: "doctors" },
     });
+
+    // Remove the default 'deactivated' filter since Doctor model uses 'status' field
+    delete filter.deactivated;
 
     const doctors = await DoctorService.paginate(filter, options);
     Response(res).body(doctors).send();
