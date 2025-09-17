@@ -27,7 +27,7 @@ class DoctorController {
     delete filter.deactivated;
 
     const doctors = await DoctorService.paginate(filter, options);
-    Response(res).body(doctors).send();
+    Response(res).body(...doctors).send();
   };
 
   // Get doctor by ID
