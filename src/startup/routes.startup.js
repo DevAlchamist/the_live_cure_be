@@ -15,6 +15,7 @@ const uploadMiddleware = upload.single("file");
 const { default: axios } = require("axios");
 
 //Routers
+const { AuthRouter } = require("../routes/auth.routes");
 const { UserRouter } = require("../routes/users.routes");
 const { DoctorRouter } = require("../routes/doctors.routes");
 const { ClinicRouter } = require("../routes/clinics.routes");
@@ -26,6 +27,10 @@ const { SettingsRouter } = require("../routes/settings.routes");
 const { StatisticsRouter } = require("../routes/statistics.routes");
 const { ContactRouter } = require("../routes/contact.routes");
 const { InvoiceRouter } = require("../routes/invoices.routes");
+const { UploadRouter } = require("../routes/upload.routes");
+const { NotificationRouter } = require("../routes/notifications.routes");
+const { SearchRouter } = require("../routes/search.routes");
+const { AnalyticsRouter } = require("../routes/analytics.routes");
 
 module.exports = (app) => {
   app.use(express.json({ limit: "9999000009mb" }));
@@ -50,6 +55,7 @@ module.exports = (app) => {
 
 
   //start of routes
+  app.use("/api/auth", AuthRouter);
   app.use("/api/users", UserRouter);
   app.use("/api/doctors", DoctorRouter);
   app.use("/api/clinics", ClinicRouter);
@@ -61,6 +67,10 @@ module.exports = (app) => {
   app.use("/api/stats", StatisticsRouter);
   app.use("/api/contact", ContactRouter);
   app.use("/api/invoices", InvoiceRouter);
+  app.use("/api/upload", UploadRouter);
+  app.use("/api/notifications", NotificationRouter);
+  app.use("/api/search", SearchRouter);
+  app.use("/api/analytics", AnalyticsRouter);
   app.post("/api/upload-image", uploadMiddleware, async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });

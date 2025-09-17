@@ -50,9 +50,41 @@ router.get(
   AppointmentController.getAppointmentsByClinic
 );
 router.get(
-  "/patient/:patientEmail", //[Auth]
+  "/patient/:patientId", //[Auth]
   AppointmentController.getAppointmentsByPatient
 );
+
+// Additional booking queries (commented out until methods are implemented)
+// router.get(
+//   "/search", //[Auth]
+//   AppointmentController.searchAppointments
+// );
+router.get(
+  "/stats", //[Auth]
+  AppointmentController.getAppointmentStats
+);
+// router.get(
+//   "/history/:patientId", //[Auth]
+//   AppointmentController.getBookingHistory
+// );
+// router.get(
+//   "/upcoming/:patientId", //[Auth]
+//   AppointmentController.getUpcomingBookings
+// );
+// router.get(
+//   "/today/:doctorId", //[Auth]
+//   AppointmentController.getTodaysBookings
+// );
+
+// Availability & Time Slots (commented out until methods are implemented)
+// router.post(
+//   "/check-availability", //[Auth]
+//   AppointmentController.checkAvailability
+// );
+// router.get(
+//   "/available-slots", //[Auth]
+//   AppointmentController.getAvailableSlots
+// );
 
 router.get(
   "/:appointmentId", //[Auth]
@@ -91,6 +123,16 @@ router.put(
   "/:appointmentId/payment", //[Auth]
   AppointmentController.updatePaymentStatus
 );
+
+// Additional appointment actions (commented out until methods are implemented)
+// router.post(
+//   "/:appointmentId/reminder", //[Auth]
+//   AppointmentController.sendBookingReminder
+// );
+// router.post(
+//   "/:appointmentId/notes", //[Auth]
+//   AppointmentController.addBookingNotes
+// );
 
 // DELETE requests (Admin only)
 router.delete(

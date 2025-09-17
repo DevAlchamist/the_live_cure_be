@@ -40,6 +40,11 @@ router.get("/:doctorId", DoctorController.getDoctorById); // Doctor details
 router.get("/:doctorId/reviews", DoctorController.getDoctorReviews); // Doctor reviews (if implemented)
 router.get("/:doctorId/availability", DoctorController.getDoctorAvailability); // Doctor availability
 
+// Doctor media & reviews (commented out until methods are implemented)
+// router.post("/:doctorId/image", [Auth], DoctorController.uploadDoctorImage);
+// router.put("/:doctorId/availability", [Auth], DoctorController.updateDoctorAvailability);
+// router.post("/:doctorId/reviews", DoctorController.addDoctorReview);
+
 // POST requests (Admin only)
 router.post(
   "/",

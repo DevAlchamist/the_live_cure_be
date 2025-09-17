@@ -128,6 +128,96 @@ class UserController {
     Response(res).body(user).send();
   };
 
+  // Additional authentication methods
+  forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    
+    const user = await UserService.findOne({ email });
+    if (!user) {
+      throw new HttpError(404, "User Not Found");
+    }
+
+    // Generate reset token (you'll need to implement this in your User model)
+    const resetToken = user.generatePasswordResetToken();
+    await user.save();
+
+    // Send email with reset token (implement email service)
+    // await MailHelper.sendPasswordResetEmail(email, resetToken);
+
+    Response(res)
+      .status(200)
+      .message("Password reset email sent successfully")
+      .send();
+  };
+
+  resetPassword = async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    // Find user by reset token and check if it's valid
+    const user = await UserService.findOne({ 
+      passwordResetToken: token,
+      passwordResetExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      throw new HttpError(400, "Invalid or expired reset token");
+    }
+
+    // Hash new password
+    const salt = await HasherHelper.getSalt(10);
+    const hash = await HasherHelper.hash(newPassword, salt);
+
+    // Update user password and clear reset token
+    user.password = hash;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    Response(res)
+      .status(200)
+      .message("Password reset successfully")
+      .send();
+  };
+
+  logout = async (req, res) => {
+    // In a real application, you might want to blacklist the token
+    // or store it in a Redis cache for token invalidation
+    
+    Response(res)
+      .status(200)
+      .message("Logged out successfully")
+      .send();
+  };
+
+  changePassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user._id;
+
+    const user = await UserService.findById(userId);
+    if (!user) {
+      throw new HttpError(404, "User Not Found");
+    }
+
+    // Verify current password
+    const isCurrentPasswordValid = await HasherHelper.compare(currentPassword, user.password);
+    if (!isCurrentPasswordValid) {
+      throw new HttpError(401, "Current password is incorrect");
+    }
+
+    // Hash new password
+    const salt = await HasherHelper.getSalt(10);
+    const hash = await HasherHelper.hash(newPassword, salt);
+
+    // Update password
+    user.password = hash;
+    await user.save();
+
+    Response(res)
+      .status(200)
+      .message("Password changed successfully")
+      .send();
+  };
+
 }
 
 module.exports.UserController = new UserController();

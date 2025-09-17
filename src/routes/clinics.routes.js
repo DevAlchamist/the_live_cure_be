@@ -21,11 +21,26 @@ router.get("/specialty/:specialty", ClinicController.getClinicsBySpecialty);
 
 router.get("/:clinicId", ClinicController.getClinicById); // Clinic details
 
+// Additional clinic endpoints (commented out until methods are implemented)
+// router.get("/types", ClinicController.getClinicTypes);
+// router.get("/cities", ClinicController.getClinicCities);
+// router.get("/search", ClinicController.searchClinics);
+
 // POST requests
 router.post("/", [Auth], ClinicController.createClinic); // Admin only
 router.post("/:clinicId/specialties", [Auth], ClinicController.addSpecialty); // Admin only
 router.post("/:clinicId/facilities", [Auth], ClinicController.addFacility); // Admin only
 router.post("/filter/amenities", ClinicController.getClinicsByAmenities); // Public endpoint (POST for array data)
+
+// Clinic media & management (commented out until methods are implemented)
+// router.post("/:clinicId/image", [Auth], ClinicController.uploadClinicImage);
+// router.get("/:clinicId/doctors", ClinicController.getClinicDoctors);
+// router.post("/:clinicId/doctors", [Auth], ClinicController.addDoctorToClinic);
+// router.delete("/:clinicId/doctors/:doctorId", [Auth], ClinicController.removeDoctorFromClinic);
+// router.get("/:clinicId/working-hours", ClinicController.getWorkingHours);
+// router.put("/:clinicId/working-hours", [Auth], ClinicController.updateWorkingHours);
+// router.get("/:clinicId/reviews", ClinicController.getClinicReviews);
+// router.post("/:clinicId/reviews", ClinicController.addClinicReview);
 
 // PUT requests (Admin only)
 router.put("/:clinicId", [Auth], ClinicController.updateClinic);
