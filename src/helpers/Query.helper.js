@@ -248,8 +248,8 @@ class QueryHelper {
   }
 }
 
-const createQueryHelper = (query, options = {}) => {
-  const queryHelper = new QueryHelper(query, options);
+const createQueryHelper = (query, options = {}, defaultFilter = { deactivated: false }) => {
+  const queryHelper = new QueryHelper(query, options, defaultFilter);
   return {
     filter: queryHelper.filter,
     options: queryHelper.options

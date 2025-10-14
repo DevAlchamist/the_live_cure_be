@@ -30,7 +30,7 @@ class ContactInquiryController {
         { path: 'assignedTo', select: 'name email' },
         { path: 'respondedBy', select: 'name email' }
       ]
-    });
+    }, {}); // Pass empty object as defaultFilter - ContactInquiry doesn't have deactivated field
 
     const inquiries = await ContactInquiryService.paginate(filter, options);
     Response(res).body(inquiries).send();
