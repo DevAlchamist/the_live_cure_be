@@ -132,7 +132,9 @@ class ContactInquiryController {
     const { id } = req.params;
     const { response } = req.body;
     
-    const inquiry = await ContactInquiryService.respondToInquiry(id, response, req.user._id);
+    // Handle case when auth is disabled - req.user might be undefined
+    const respondedBy = req.user?._id || null;
+    const inquiry = await ContactInquiryService.respondToInquiry(id, response, respondedBy);
     
     if (!inquiry) {
       throw new HttpError(404, "Contact inquiry not found");
