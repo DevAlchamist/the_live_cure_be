@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const contactInquirySchema = new mongoose.Schema({
   name: {
@@ -65,5 +66,8 @@ contactInquirySchema.index({ type: 1 });
 contactInquirySchema.index({ status: 1 });
 contactInquirySchema.index({ priority: 1 });
 contactInquirySchema.index({ createdAt: -1 });
+
+// Add pagination plugin
+contactInquirySchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("ContactInquiry", contactInquirySchema);
