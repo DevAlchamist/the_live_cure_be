@@ -12,6 +12,60 @@ class DoctorController {
       delete req.body.profileImage;
     }
     
+    // Parse JSON strings from FormData for complex fields
+    try {
+      // Parse qualifications array
+      if (req.body.qualifications && typeof req.body.qualifications === 'string') {
+        req.body.qualifications = JSON.parse(req.body.qualifications);
+      }
+      
+      // Parse cities array
+      if (req.body.cities && typeof req.body.cities === 'string') {
+        req.body.cities = JSON.parse(req.body.cities);
+      }
+      
+      // Parse diseasesTreated array
+      if (req.body.diseasesTreated && typeof req.body.diseasesTreated === 'string') {
+        req.body.diseasesTreated = JSON.parse(req.body.diseasesTreated);
+      }
+      
+      // Parse mapCoordinates object
+      if (req.body.mapCoordinates && typeof req.body.mapCoordinates === 'string') {
+        req.body.mapCoordinates = JSON.parse(req.body.mapCoordinates);
+      }
+      
+      // Parse individual coordinate fields if sent separately
+      if (req.body.latitude && req.body.longitude && !req.body.mapCoordinates) {
+        req.body.mapCoordinates = {
+          latitude: parseFloat(req.body.latitude),
+          longitude: parseFloat(req.body.longitude)
+        };
+        delete req.body.latitude;
+        delete req.body.longitude;
+      }
+      
+      // Convert string numbers to actual numbers
+      if (req.body.consultationFees && typeof req.body.consultationFees === 'string') {
+        req.body.consultationFees = parseFloat(req.body.consultationFees);
+      }
+      if (req.body.rating && typeof req.body.rating === 'string') {
+        req.body.rating = parseFloat(req.body.rating);
+      }
+      if (req.body.reviewCount && typeof req.body.reviewCount === 'string') {
+        req.body.reviewCount = parseInt(req.body.reviewCount);
+      }
+      
+      // Convert boolean strings to booleans
+      if (req.body.isVisitingDoctor && typeof req.body.isVisitingDoctor === 'string') {
+        req.body.isVisitingDoctor = req.body.isVisitingDoctor === 'true';
+      }
+      if (req.body.isHospitalDoctor && typeof req.body.isHospitalDoctor === 'string') {
+        req.body.isHospitalDoctor = req.body.isHospitalDoctor === 'true';
+      }
+    } catch (parseError) {
+      throw new HttpError(400, `Invalid JSON format: ${parseError.message}`);
+    }
+    
     const doctor = await DoctorService.create(req.body);
     
     Response(res)
@@ -56,6 +110,60 @@ class DoctorController {
     if (req.body.profileImage) {
       req.body.profileImageUrl = req.body.profileImage;
       delete req.body.profileImage;
+    }
+    
+    // Parse JSON strings from FormData for complex fields
+    try {
+      // Parse qualifications array
+      if (req.body.qualifications && typeof req.body.qualifications === 'string') {
+        req.body.qualifications = JSON.parse(req.body.qualifications);
+      }
+      
+      // Parse cities array
+      if (req.body.cities && typeof req.body.cities === 'string') {
+        req.body.cities = JSON.parse(req.body.cities);
+      }
+      
+      // Parse diseasesTreated array
+      if (req.body.diseasesTreated && typeof req.body.diseasesTreated === 'string') {
+        req.body.diseasesTreated = JSON.parse(req.body.diseasesTreated);
+      }
+      
+      // Parse mapCoordinates object
+      if (req.body.mapCoordinates && typeof req.body.mapCoordinates === 'string') {
+        req.body.mapCoordinates = JSON.parse(req.body.mapCoordinates);
+      }
+      
+      // Parse individual coordinate fields if sent separately
+      if (req.body.latitude && req.body.longitude && !req.body.mapCoordinates) {
+        req.body.mapCoordinates = {
+          latitude: parseFloat(req.body.latitude),
+          longitude: parseFloat(req.body.longitude)
+        };
+        delete req.body.latitude;
+        delete req.body.longitude;
+      }
+      
+      // Convert string numbers to actual numbers
+      if (req.body.consultationFees && typeof req.body.consultationFees === 'string') {
+        req.body.consultationFees = parseFloat(req.body.consultationFees);
+      }
+      if (req.body.rating && typeof req.body.rating === 'string') {
+        req.body.rating = parseFloat(req.body.rating);
+      }
+      if (req.body.reviewCount && typeof req.body.reviewCount === 'string') {
+        req.body.reviewCount = parseInt(req.body.reviewCount);
+      }
+      
+      // Convert boolean strings to booleans
+      if (req.body.isVisitingDoctor && typeof req.body.isVisitingDoctor === 'string') {
+        req.body.isVisitingDoctor = req.body.isVisitingDoctor === 'true';
+      }
+      if (req.body.isHospitalDoctor && typeof req.body.isHospitalDoctor === 'string') {
+        req.body.isHospitalDoctor = req.body.isHospitalDoctor === 'true';
+      }
+    } catch (parseError) {
+      throw new HttpError(400, `Invalid JSON format: ${parseError.message}`);
     }
     
     const doctor = await DoctorService.findByIdAndUpdate(doctorId, req.body);
