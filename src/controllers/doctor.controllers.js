@@ -6,6 +6,12 @@ const createQueryHelper = require("../helpers/Query.helper");
 class DoctorController {
   // Create new doctor
   createDoctor = async (req, res) => {
+    // Map profileImage from middleware to profileImageUrl for model
+    if (req.body.profileImage) {
+      req.body.profileImageUrl = req.body.profileImage;
+      delete req.body.profileImage;
+    }
+    
     const doctor = await DoctorService.create(req.body);
     
     Response(res)
@@ -45,6 +51,13 @@ class DoctorController {
   // Update doctor
   updateDoctor = async (req, res) => {
     const { doctorId } = req.params;
+    
+    // Map profileImage from middleware to profileImageUrl for model
+    if (req.body.profileImage) {
+      req.body.profileImageUrl = req.body.profileImage;
+      delete req.body.profileImage;
+    }
+    
     const doctor = await DoctorService.findByIdAndUpdate(doctorId, req.body);
     
     if (!doctor) {

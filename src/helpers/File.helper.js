@@ -1,13 +1,9 @@
 const multer = require("multer");
 const { memoryStorage } = multer;
 const _ = require("lodash");
-const cloudinaryConfig = require("../config/cloudinaryConfig.js");
-const cloudinary = require("cloudinary").v2;
+const { uploadOnImageKit, deleteOnImageKitByUrl } = require("../utils/imagekit");
 const fs = require("fs");
 const path = require("path");
-
-// Cloudinary configuration
-cloudinaryConfig();
 
 // --- Storage Configuration ---
 const storage = memoryStorage(); // Use memory storage for multer
@@ -23,26 +19,15 @@ const upload = multer({
 });
 
 // --- Image Upload Function ---
-async function imageUpload(files) {
+async function imageUpload(files, folder = "uploads") {
   return Promise.all(
-    files.map((file) => {
-      return new Promise((resolve, reject) => {
-        cloudinary.uploader
-          .upload_stream(
-            {
-              resource_type: "auto", // Auto detect file type (image, video, etc.)
-              folder: "uploads",
-            },
-            (error, result) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(result.secure_url); // Return the secure URL from Cloudinary
-              }
-            }
-          )
-          .end(file.buffer); // Send the buffer to Cloudinary upload stream
-      });
+    files.map(async (file) => {
+      try {
+        const result = await uploadOnImageKit(file.buffer, folder);
+        return result.url; // Return the URL from ImageKit
+      } catch (error) {
+        throw error;
+      }
     })
   );
 }
@@ -53,7 +38,8 @@ const handleFileUploads = async (
   fileType,
   key,
   dataToSave,
-  array = false
+  array = false,
+  folder = "uploads"
 ) => {
   if (files && files[fileType]) {
     const filePaths = [];
@@ -71,10 +57,10 @@ const handleFileUploads = async (
       );
     }
 
-    // Upload each file to Cloudinary
+    // Upload each file to ImageKit
     const uploadPromises = validFiles.map(async (file) => {
       // Assuming your imageUpload function can handle file buffer
-      const result = await imageUpload([file]);
+      const result = await imageUpload([file], folder || "uploads");
       return result.length > 0 ? result[0] : null; // Return the file path or null if failed
     });
 
@@ -126,18 +112,9 @@ const handleFileUploads = async (
   }
 };
 
-const extractPublicId = (url) => {
-  const regex = /\/([^/]+)\.[^/]+$/; // Adjust regex if you have other formats
-  const match = url.match(regex);
-  return match ? match[1] : null; // Return the public ID or null if not found
-};
-
-const deleteCloudinaryImage = async (publicId) => {
+const deleteImageKitImage = async (url) => {
   try {
-    const result = await cloudinary.api.delete_resources([`ldd/${publicId}`], {
-      type: "upload",
-      resource_type: "image",
-    });
+    const result = await deleteOnImageKitByUrl(url);
     console.log("Delete Result:", result);
     return result;
   } catch (error) {
@@ -172,9 +149,8 @@ const handleFileRemovalAndUploads = async (
     const removedFiles = [];
 
     for (const file of filesToRemoveArray) {
-      const publicId = extractPublicId(file);
-      if (publicId) {
-        deletionPromises.push(deleteCloudinaryImage(publicId));
+      if (file) {
+        deletionPromises.push(deleteImageKitImage(file));
         removedFiles.push(file);
       }
     }

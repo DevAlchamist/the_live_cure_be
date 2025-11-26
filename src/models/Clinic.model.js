@@ -108,6 +108,10 @@ const clinicSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    imageUrl: {
+      type: String,
+      default: "",
+    },
     amenities: [{
       type: String,
       trim: true,

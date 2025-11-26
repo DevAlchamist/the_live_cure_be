@@ -1,6 +1,7 @@
 const express = require("express");
 const { DoctorController } = require("../controllers/doctor.controllers");
 const { Auth } = require("../middlewares/auth.middlewares");
+const { imageUploadMiddleware } = require("../middlewares/imageUpload.middleware");
 
 const router = express.Router();
 
@@ -49,6 +50,7 @@ router.get("/:doctorId/availability", DoctorController.getDoctorAvailability); /
 router.post(
   "/",
   //[Auth]
+  imageUploadMiddleware("profileImage", "doctors"),
   DoctorController.createDoctor
 );
 router.post(
@@ -81,6 +83,7 @@ router.post(
 router.put(
   "/:doctorId",
   //[Auth]
+  imageUploadMiddleware("profileImage", "doctors"),
   DoctorController.updateDoctor
 );
 router.put(

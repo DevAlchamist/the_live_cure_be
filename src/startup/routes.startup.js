@@ -7,7 +7,7 @@ const multer = require("multer");
 
 
 const ErrorHandler = require("../middlewares/error.middlewares"); // error handler for routes, since we will continue to next route upon request
-const { uploadOnCloudinary } = require("../utils/cloudinary");
+const { uploadOnImageKit } = require("../utils/imagekit");
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -77,12 +77,12 @@ module.exports = (app) => {
     }
 
     try {
-      const result = await uploadOnCloudinary(req.file.buffer, "sustainable");
+      const result = await uploadOnImageKit(req.file.buffer, "sustainable");
       console.log({ result });
       res.json({
         error: false,
         message: "File uploaded successfully",
-        result: { url: result.url, publicId: result.public_id },
+        result: { url: result.url, fileId: result.fileId, filePath: result.filePath },
       });
     } catch (error) {
       res.status(500).json({ message: "Error uploading file", error });

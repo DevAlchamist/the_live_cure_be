@@ -1,6 +1,7 @@
 const express = require("express");
 const { ClinicController } = require("../controllers/clinic.controllers");
 const { Auth } = require("../middlewares/auth.middlewares");
+const { imageUploadMiddleware } = require("../middlewares/imageUpload.middleware");
 
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.get("/:clinicId", ClinicController.getClinicById); // Clinic details
 // router.get("/search", ClinicController.searchClinics);
 
 // POST requests
-router.post("/", [Auth], ClinicController.createClinic); // Admin only
+router.post("/", [Auth], imageUploadMiddleware("image", "clinics"), ClinicController.createClinic); // Admin only
 router.post("/:clinicId/specialties", [Auth], ClinicController.addSpecialty); // Admin only
 router.post("/:clinicId/facilities", [Auth], ClinicController.addFacility); // Admin only
 router.post("/filter/amenities", ClinicController.getClinicsByAmenities); // Public endpoint (POST for array data)
@@ -45,7 +46,7 @@ router.post("/filter/amenities", ClinicController.getClinicsByAmenities); // Pub
 // router.post("/:clinicId/reviews", ClinicController.addClinicReview);
 
 // PUT requests (Admin only)
-router.put("/:clinicId", [Auth], ClinicController.updateClinic);
+router.put("/:clinicId", [Auth], imageUploadMiddleware("image", "clinics"), ClinicController.updateClinic);
 router.put("/:clinicId/status", [Auth], ClinicController.updateClinicStatus);
 router.put("/:clinicId/working-hours", [Auth], ClinicController.updateWorkingHours);
 

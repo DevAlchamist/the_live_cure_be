@@ -6,6 +6,12 @@ const createQueryHelper = require("../helpers/Query.helper");
 class ClinicController {
   // Create new clinic
   createClinic = async (req, res) => {
+    // Map image from middleware to imageUrl for model
+    if (req.body.image) {
+      req.body.imageUrl = req.body.image;
+      delete req.body.image;
+    }
+    
     const clinic = await ClinicService.create(req.body);
     
     Response(res)
@@ -53,6 +59,13 @@ class ClinicController {
   // Update clinic
   updateClinic = async (req, res) => {
     const { clinicId } = req.params;
+    
+    // Map image from middleware to imageUrl for model
+    if (req.body.image) {
+      req.body.imageUrl = req.body.image;
+      delete req.body.image;
+    }
+    
     const clinic = await ClinicService.findByIdAndUpdate(clinicId, req.body);
     
     if (!clinic) {

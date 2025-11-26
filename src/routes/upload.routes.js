@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const { Auth } = require("../middlewares/auth.middlewares");
-const { uploadOnCloudinary } = require("../utils/cloudinary");
+const { uploadOnImageKit } = require("../utils/imagekit");
 
 const router = express.Router();
 
@@ -23,15 +23,18 @@ router.post("/image", [Auth], uploadImageMiddleware, async (req, res) => {
       });
     }
 
-    const result = await uploadOnCloudinary(req.file.buffer, "images");
+    const result = await uploadOnImageKit(req.file.buffer, "images");
     
     res.json({
       error: false,
       message: "Image uploaded successfully",
       result: { 
         url: result.url, 
-        publicId: result.public_id,
-        secureUrl: result.secure_url
+        fileId: result.fileId,
+        filePath: result.filePath,
+        name: result.name,
+        size: result.size,
+        fileType: result.fileType
       },
     });
   } catch (error) {
@@ -52,15 +55,18 @@ router.post("/document", [Auth], uploadDocumentMiddleware, async (req, res) => {
       });
     }
 
-    const result = await uploadOnCloudinary(req.file.buffer, "documents");
+    const result = await uploadOnImageKit(req.file.buffer, "documents");
     
     res.json({
       error: false,
       message: "Document uploaded successfully",
       result: { 
         url: result.url, 
-        publicId: result.public_id,
-        secureUrl: result.secure_url,
+        fileId: result.fileId,
+        filePath: result.filePath,
+        name: result.name,
+        size: result.size,
+        fileType: result.fileType,
         fileName: req.file.originalname,
         fileSize: req.file.size,
         mimeType: req.file.mimetype
@@ -84,21 +90,57 @@ router.post("/avatar", [Auth], uploadAvatarMiddleware, async (req, res) => {
       });
     }
 
-    const result = await uploadOnCloudinary(req.file.buffer, "avatars");
+    const result = await uploadOnImageKit(req.file.buffer, "avatars");
     
     res.json({
       error: false,
       message: "Avatar uploaded successfully",
       result: { 
         url: result.url, 
-        publicId: result.public_id,
-        secureUrl: result.secure_url
+        fileId: result.fileId,
+        filePath: result.filePath,
+        name: result.name,
+        size: result.size,
+        fileType: result.fileType
       },
     });
   } catch (error) {
     res.status(500).json({ 
       error: true,
       message: "Error uploading avatar", 
+      result: error.message 
+    });
+  }
+});
+
+// Test endpoint (no auth required for testing)
+router.post("/test", uploadImageMiddleware, async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ 
+        error: true,
+        message: "No image file uploaded" 
+      });
+    }
+
+    const result = await uploadOnImageKit(req.file.buffer, "test");
+    
+    res.json({
+      error: false,
+      message: "Image uploaded successfully to liv_cure/test folder",
+      result: { 
+        url: result.url, 
+        fileId: result.fileId,
+        filePath: result.filePath,
+        name: result.name,
+        size: result.size,
+        fileType: result.fileType
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: true,
+      message: "Error uploading image", 
       result: error.message 
     });
   }
