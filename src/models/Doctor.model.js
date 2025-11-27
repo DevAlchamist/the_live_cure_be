@@ -6,14 +6,6 @@ const qualificationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  institute: {
-    type: String,
-    required: true,
-  },
-  year: {
-    type: Number,
-    required: true,
-  },
 });
 
 const mapCoordinatesSchema = new mongoose.Schema({
@@ -84,19 +76,7 @@ const doctorSchema = new mongoose.Schema(
       type: String,
       trim: true,
     }],
-    address: {
-      type: String,
-      required: true,
-    },
     mapCoordinates: mapCoordinatesSchema,
-    mapLink: {
-      type: String,
-      default: "",
-    },
-    diseasesTreated: [{
-      type: String,
-      trim: true,
-    }],
     employeeCode: {
       type: String,
       unique: true,
@@ -133,7 +113,6 @@ doctorSchema.index({
   specialty: "text",
   mainCategory: "text",
   cities: "text",
-  diseasesTreated: "text",
 });
 
 // Add compound indexes for efficient filtering

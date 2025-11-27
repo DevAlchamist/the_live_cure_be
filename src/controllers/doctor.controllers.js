@@ -24,11 +24,6 @@ class DoctorController {
         req.body.cities = JSON.parse(req.body.cities);
       }
       
-      // Parse diseasesTreated array
-      if (req.body.diseasesTreated && typeof req.body.diseasesTreated === 'string') {
-        req.body.diseasesTreated = JSON.parse(req.body.diseasesTreated);
-      }
-      
       // Parse mapCoordinates object
       if (req.body.mapCoordinates && typeof req.body.mapCoordinates === 'string') {
         req.body.mapCoordinates = JSON.parse(req.body.mapCoordinates);
@@ -78,7 +73,7 @@ class DoctorController {
   // Get all doctors with search and filters
   getAllDoctors = async (req, res) => {
     const { filter, options } = createQueryHelper(req.query, {
-      searchFields: ["fullName", "specialty", "mainCategory", "cities", "diseasesTreated"],
+      searchFields: ["fullName", "specialty", "mainCategory", "cities"],
       customLabels: { docs: "doctors" },
       customPopulate: [],
     });
@@ -122,11 +117,6 @@ class DoctorController {
       // Parse cities array
       if (req.body.cities && typeof req.body.cities === 'string') {
         req.body.cities = JSON.parse(req.body.cities);
-      }
-      
-      // Parse diseasesTreated array
-      if (req.body.diseasesTreated && typeof req.body.diseasesTreated === 'string') {
-        req.body.diseasesTreated = JSON.parse(req.body.diseasesTreated);
       }
       
       // Parse mapCoordinates object
@@ -322,7 +312,7 @@ class DoctorController {
   // Advanced search endpoint
   searchDoctors = async (req, res) => {
     const { filter, options } = createQueryHelper(req.query, {
-      searchFields: ["fullName", "specialty", "mainCategory", "cities", "diseasesTreated"],
+      searchFields: ["fullName", "specialty", "mainCategory", "cities"],
       customLabels: { docs: "doctors" },
     });
 
@@ -489,43 +479,6 @@ class DoctorController {
       .send();
   };
 
-  // Add disease to doctor
-  addDisease = async (req, res) => {
-    const { doctorId } = req.params;
-    const { disease } = req.body;
-
-    const doctor = await DoctorService.findById(doctorId);
-    if (!doctor) throw new HttpError(404, "Doctor not found");
-
-    if (!doctor.diseasesTreated.includes(disease)) {
-      doctor.diseasesTreated.push(disease);
-      await doctor.save();
-    }
-
-    Response(res)
-      .status(200)
-      .message("Disease added successfully")
-      .body(doctor)
-      .send();
-  };
-
-  // Remove disease from doctor
-  removeDisease = async (req, res) => {
-    const { doctorId } = req.params;
-    const { disease } = req.body;
-
-    const doctor = await DoctorService.findById(doctorId);
-    if (!doctor) throw new HttpError(404, "Doctor not found");
-
-    doctor.diseasesTreated = doctor.diseasesTreated.filter(d => d !== disease);
-    await doctor.save();
-
-    Response(res)
-      .status(200)
-      .message("Disease removed successfully")
-      .body(doctor)
-      .send();
-  };
 
   // Clone doctor profile (Admin)
   cloneDoctor = async (req, res) => {

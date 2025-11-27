@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/", DoctorController.getAllDoctors);
 // Query params: page, limit, search, sort, specialty, mainCategory, cities, status,
 // rating, minRating, maxRating, consultationFees, minFees, maxFees, experience,
-// isVisitingDoctor, isHospitalDoctor, diseasesTreated, professionalTitle
+// isVisitingDoctor, isHospitalDoctor, professionalTitle
 
 router.get("/search", DoctorController.searchDoctors); // Advanced search endpoint
 // Query params: q (query), filters (JSON string), location, radius
@@ -67,11 +67,6 @@ router.post(
   "/:doctorId/cities",
   //[Auth]
   DoctorController.addCity
-);
-router.post(
-  "/:doctorId/diseases",
-  //[Auth]
-  DoctorController.addDisease
 );
 router.post(
   "/:doctorId/clone",
@@ -134,11 +129,6 @@ router.delete(
   "/:doctorId/cities",
   //[Auth]
   DoctorController.removeCity
-);
-router.delete(
-  "/:doctorId/diseases",
-  //[Auth]
-  DoctorController.removeDisease
 );
 
 module.exports.DoctorRouter = router;

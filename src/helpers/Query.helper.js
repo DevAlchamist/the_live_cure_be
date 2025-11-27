@@ -187,13 +187,6 @@ class QueryHelper {
       this.filter.amenities = { $in: amenities.map(a => new RegExp(a.trim(), 'i')) };
     }
 
-    if (this.query?.diseasesTreated) {
-      const diseases = _.isArray(this.query.diseasesTreated) 
-        ? this.query.diseasesTreated 
-        : this.query.diseasesTreated.split(',');
-      this.filter.diseasesTreated = { $in: diseases.map(d => new RegExp(d.trim(), 'i')) };
-    }
-
     // Boolean filters
     if (this.query?.isVisitingDoctor !== undefined) {
       this.filter.isVisitingDoctor = this.query.isVisitingDoctor === 'true';
