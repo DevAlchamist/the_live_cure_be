@@ -25,7 +25,7 @@ class SearchController {
 
   static async searchDoctors(req, res) {
     try {
-      const { q, specialty, city, rating, fees, page = 1, limit = 10 } = req.query;
+      const { q, specialty, city, rating, fees, page = 1, limit  } = req.query;
 
       const results = await SearchService.searchDoctors({
         query: q,
