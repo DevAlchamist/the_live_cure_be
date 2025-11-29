@@ -4,7 +4,7 @@ const { ResponseHelper } = require("../helpers/Response.helpers");
 class NotificationController {
   static async getUserNotifications(req, res) {
     try {
-      const { page = 1, limit = 10, type, status, read } = req.query;
+      const { page = 1, limit, type, status, read } = req.query;
       const userId = req.user.id;
 
       const notifications = await NotificationService.getUserNotifications({
@@ -24,7 +24,7 @@ class NotificationController {
 
   static async getUnreadNotifications(req, res) {
     try {
-      const { page = 1, limit = 10 } = req.query;
+      const { page = 1, limit } = req.query;
       const userId = req.user.id;
 
       const notifications = await NotificationService.getUnreadNotifications({

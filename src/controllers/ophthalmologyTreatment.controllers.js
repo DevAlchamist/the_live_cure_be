@@ -88,7 +88,7 @@ class OphthalmologyTreatmentController {
   // Search treatments
   searchTreatments = async (req, res) => {
     const { q } = req.query;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     
     if (!q) {
       throw new HttpError(400, "Search query is required");

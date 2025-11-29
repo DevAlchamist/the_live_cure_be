@@ -194,7 +194,7 @@ class InvoiceController {
 
   // Get pending invoices
   getPendingInvoices = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const invoices = await InvoiceService.paginate(
       { status: 'pending' },
       { page, limit, sort: { issueDate: -1 } }
@@ -204,7 +204,7 @@ class InvoiceController {
 
   // Get overdue invoices
   getOverdueInvoices = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const today = new Date();
     const invoices = await InvoiceService.paginate(
       { 
@@ -218,7 +218,7 @@ class InvoiceController {
 
   // Get paid invoices
   getPaidInvoices = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const invoices = await InvoiceService.paginate(
       { status: 'paid' },
       { page, limit, sort: { paymentDate: -1 } }
@@ -228,7 +228,7 @@ class InvoiceController {
 
   // Get recent invoices
   getRecentInvoices = async (req, res) => {
-    const { limit = 10 } = req.query;
+    const { limit } = req.query;
     const invoices = await InvoiceService.paginate(
       {},
       { 

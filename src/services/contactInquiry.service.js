@@ -30,7 +30,7 @@ class ContactInquiryService {
 
   // Get inquiries by status
   getByStatus = async (status, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await ContactInquiry.paginate(
       { status },
       { 
@@ -44,7 +44,7 @@ class ContactInquiryService {
 
   // Get inquiries by type
   getByType = async (type, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await ContactInquiry.paginate(
       { type },
       { 
@@ -58,7 +58,7 @@ class ContactInquiryService {
 
   // Get inquiries by priority
   getByPriority = async (priority, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await ContactInquiry.paginate(
       { priority },
       { 
@@ -145,7 +145,7 @@ class ContactInquiryService {
   };
 
   // Get recent inquiries
-  getRecentInquiries = async (limit = 10) => {
+  getRecentInquiries = async (limit) => {
     return await ContactInquiry.find()
       .sort({ createdAt: -1 })
       .limit(limit)

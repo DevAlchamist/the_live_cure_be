@@ -95,7 +95,7 @@ class BlogController {
 
   // Get featured blog posts
   getFeaturedBlogs = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const blogs = await BlogService.getFeaturedBlogs({ page, limit });
     Response(res).body(blogs).send();
   };
@@ -103,7 +103,7 @@ class BlogController {
   // Get blogs by category
   getBlogsByCategory = async (req, res) => {
     const { category } = req.params;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const blogs = await BlogService.getBlogsByCategory(category, { page, limit });
     Response(res).body(blogs).send();
   };
@@ -111,7 +111,7 @@ class BlogController {
   // Search blogs
   searchBlogs = async (req, res) => {
     const { q } = req.query;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     
     if (!q) {
       throw new HttpError(400, "Search query is required");

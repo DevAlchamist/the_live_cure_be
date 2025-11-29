@@ -80,7 +80,7 @@ class PatientStoryController {
 
   // Get featured patient stories
   getFeaturedStories = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const stories = await PatientStoryService.getFeaturedStories({ page, limit });
     Response(res).body(stories).send();
   };
@@ -88,7 +88,7 @@ class PatientStoryController {
   // Get stories by category
   getStoriesByCategory = async (req, res) => {
     const { category } = req.params;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const stories = await PatientStoryService.getStoriesByCategory(category, { page, limit });
     Response(res).body(stories).send();
   };
@@ -96,7 +96,7 @@ class PatientStoryController {
   // Get stories by condition
   getStoriesByCondition = async (req, res) => {
     const { condition } = req.params;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const stories = await PatientStoryService.getStoriesByCondition(condition, { page, limit });
     Response(res).body(stories).send();
   };
@@ -104,7 +104,7 @@ class PatientStoryController {
   // Search patient stories
   searchStories = async (req, res) => {
     const { q } = req.query;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     
     if (!q) {
       throw new HttpError(400, "Search query is required");
@@ -136,7 +136,7 @@ class PatientStoryController {
   // Get stories by rating
   getStoriesByRating = async (req, res) => {
     const { minRating = 4 } = req.query;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const stories = await PatientStoryService.getStoriesByRating(parseInt(minRating), { page, limit });
     Response(res).body(stories).send();
   };

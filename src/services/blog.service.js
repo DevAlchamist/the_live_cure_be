@@ -35,7 +35,7 @@ class BlogService {
 
   // Get featured blog posts
   getFeaturedBlogs = async (options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await Blog.paginate(
       { featured: true, status: 'published' },
       { page, limit, sort: { createdAt: -1 } }
@@ -44,7 +44,7 @@ class BlogService {
 
   // Get blogs by category
   getBlogsByCategory = async (category, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await Blog.paginate(
       { category, status: 'published' },
       { page, limit, sort: { createdAt: -1 } }
@@ -53,7 +53,7 @@ class BlogService {
 
   // Search blogs
   searchBlogs = async (query, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await Blog.paginate(
       { 
         $text: { $search: query },

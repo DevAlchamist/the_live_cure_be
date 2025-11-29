@@ -40,7 +40,7 @@ class OphthalmologyTreatmentService {
 
   // Get all treatments
   getAllTreatments = async (options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await OphthalmologyTreatment.paginate(
       { status: 'published' },
       { page, limit, sort: { title: 1 } }
@@ -49,7 +49,7 @@ class OphthalmologyTreatmentService {
 
   // Search treatments
   searchTreatments = async (query, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await OphthalmologyTreatment.paginate(
       { 
         $text: { $search: query },

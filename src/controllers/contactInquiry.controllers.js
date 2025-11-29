@@ -82,7 +82,7 @@ class ContactInquiryController {
   // Get inquiries by status
   getInquiriesByStatus = async (req, res) => {
     const { status } = req.params;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const inquiries = await ContactInquiryService.getByStatus(status, { page, limit });
     Response(res).body(inquiries).send();
   };
@@ -90,21 +90,21 @@ class ContactInquiryController {
   // Get inquiries by type
   getInquiriesByType = async (req, res) => {
     const { type } = req.params;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const inquiries = await ContactInquiryService.getByType(type, { page, limit });
     Response(res).body(inquiries).send();
   };
 
   // Get new inquiries
   getNewInquiries = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const inquiries = await ContactInquiryService.getNewInquiries({ page, limit });
     Response(res).body(inquiries).send();
   };
 
   // Get urgent inquiries
   getUrgentInquiries = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit } = req.query;
     const inquiries = await ContactInquiryService.getUrgentInquiries({ page, limit });
     Response(res).body(inquiries).send();
   };
@@ -178,7 +178,7 @@ class ContactInquiryController {
 
   // Get recent inquiries
   getRecentInquiries = async (req, res) => {
-    const { limit = 10 } = req.query;
+    const { limit } = req.query;
     const inquiries = await ContactInquiryService.getRecentInquiries(parseInt(limit));
     Response(res).body(inquiries).send();
   };

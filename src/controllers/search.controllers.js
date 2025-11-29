@@ -4,7 +4,7 @@ const { ResponseHelper } = require("../helpers/Response.helpers");
 class SearchController {
   static async globalSearch(req, res) {
     try {
-      const { q, type, page = 1, limit = 10 } = req.query;
+      const { q, type, page = 1, limit } = req.query;
 
       if (!q) {
         return ResponseHelper.error(res, "Search query is required", 400);
@@ -45,7 +45,7 @@ class SearchController {
 
   static async searchClinics(req, res) {
     try {
-      const { q, type, city, amenities, page = 1, limit = 10 } = req.query;
+      const { q, type, city, amenities, page = 1, limit } = req.query;
 
       const results = await SearchService.searchClinics({
         query: q,
@@ -64,7 +64,7 @@ class SearchController {
 
   static async searchBlogs(req, res) {
     try {
-      const { q, category, page = 1, limit = 10 } = req.query;
+      const { q, category, page = 1, limit } = req.query;
 
       const results = await SearchService.searchBlogs({
         query: q,
@@ -81,7 +81,7 @@ class SearchController {
 
   static async searchTreatments(req, res) {
     try {
-      const { q, disease, page = 1, limit = 10 } = req.query;
+      const { q, disease, page = 1, limit } = req.query;
 
       const results = await SearchService.searchTreatments({
         query: q,
@@ -98,7 +98,7 @@ class SearchController {
 
   static async searchPatientStories(req, res) {
     try {
-      const { q, condition, page = 1, limit = 10 } = req.query;
+      const { q, condition, page = 1, limit } = req.query;
 
       const results = await SearchService.searchPatientStories({
         query: q,
@@ -115,7 +115,7 @@ class SearchController {
 
   static async searchAppointments(req, res) {
     try {
-      const { q, status, date, doctor, patient, page = 1, limit = 10 } = req.query;
+      const { q, status, date, doctor, patient, page = 1, limit } = req.query;
       const userId = req.user.id;
 
       const results = await SearchService.searchAppointments({

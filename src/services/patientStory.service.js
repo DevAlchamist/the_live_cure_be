@@ -29,7 +29,7 @@ class PatientStoryService {
 
   // Get featured patient stories
   getFeaturedStories = async (options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await PatientStory.paginate(
       { featured: true, status: 'published', verified: true },
       { page, limit, sort: { createdAt: -1 } }
@@ -38,7 +38,7 @@ class PatientStoryService {
 
   // Get stories by category
   getStoriesByCategory = async (category, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await PatientStory.paginate(
       { category, status: 'published', verified: true },
       { page, limit, sort: { createdAt: -1 } }
@@ -47,7 +47,7 @@ class PatientStoryService {
 
   // Get stories by condition
   getStoriesByCondition = async (condition, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await PatientStory.paginate(
       { 
         condition: { $regex: condition, $options: 'i' },
@@ -60,7 +60,7 @@ class PatientStoryService {
 
   // Search patient stories
   searchStories = async (query, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await PatientStory.paginate(
       { 
         $text: { $search: query },
@@ -95,7 +95,7 @@ class PatientStoryService {
 
   // Get stories by rating
   getStoriesByRating = async (minRating = 4, options = {}) => {
-    const { page = 1, limit = 10 } = options;
+    const { page = 1, limit } = options;
     return await PatientStory.paginate(
       { 
         rating: { $gte: minRating },
