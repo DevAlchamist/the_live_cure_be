@@ -76,10 +76,16 @@ class DoctorController {
       searchFields: ["fullName", "specialty", "mainCategory", "cities"],
       customLabels: { docs: "doctors" },
       customPopulate: [],
+      limit: 10000, // Set a very large limit to return all doctors
     });
 
     // Remove the default 'deactivated' filter since Doctor model uses 'status' field
     delete filter.deactivated;
+
+    // If no limit is provided in query, set it to a very large number to return all results
+    if (!req.query.limit) {
+      options.limit = 10000;
+    }
 
     const doctors = await DoctorService.paginate(filter, options);
     Response(res).body(doctors).send();

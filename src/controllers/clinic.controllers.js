@@ -26,6 +26,7 @@ class ClinicController {
     const { filter, options } = createQueryHelper(req.query, {
       searchFields: ["name", "city", "state"],
       unFilter: [],
+      limit: 10000, // Set a very large limit to return all clinics
       customFilters: (filter, query) => {
         // Add custom filters from query params
         if (query.type) filter.type = query.type;
@@ -39,6 +40,11 @@ class ClinicController {
         if (query.hasWheelchairAccess !== undefined) filter.hasWheelchairAccess = query.hasWheelchairAccess === 'true';
       },
     });
+
+    // If no limit is provided in query, set it to a very large number to return all results
+    if (!req.query.limit) {
+      options.limit = 10000;
+    }
 
     const clinics = await ClinicService.searchClinics(req.query.search, filter, options);
     Response(res).body(clinics).send();
